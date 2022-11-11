@@ -1,21 +1,26 @@
 import flet
-from flet import Page, TextField, Row, ElevatedButton, Checkbox, Text, Column
+from flet import(
+    Page, TextField,
+    Row, ElevatedButton,
+    Checkbox, Text, Column
+)
 
+# To run your flet app in hot reload mode,
+# run flet name_of_entry_point.py -d 
 def main(page: Page):
-    
     page.title = "TODO App"
+    heading = Text(
+        value="Provide your full name",
+        size=30,
+        color="blue",
+        weight="bold")
     first_name = TextField(label="First name", autofocus=True, width=300)
     last_name = TextField(label="Last name", width=300)
-    greetings = Column()
-
-    def button_clicked(e):
-        greetings.controls.append(Text(f"Hello {first_name.value} {last_name.value}"))
 
     page.add(
+        heading,
         first_name,
         last_name,
-        ElevatedButton("Greet me", on_click=button_clicked),
-        greetings
     )
     page.update()
     
