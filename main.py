@@ -1,10 +1,23 @@
+import os
 import flet
-from flet import ListView, Page, Text
+from flet import Container, GridView, Page, Text, alignment, border, border_radius, colors
+
+os.environ["FLET_WS_MAX_MESSAGE_SIZE"] = "8000000"
 
 def main(page: Page):
-    lv = ListView(height=250, spacing=15)
+    gv = GridView(expand=True, max_extent=150, child_aspect_ratio=1)
+    page.add(gv)
+
     for i in range(5000):
-        lv.controls.append(Text(f"Line {i}"))
-    page.add(lv)
+        gv.controls.append(
+            Container(
+                Text(f"Item {i}"),
+                alignment=alignment.center,
+                bgcolor=colors.AMBER_100,
+                border=border.all(1, colors.AMBER_400),
+                border_radius=border_radius.all(5),
+            )
+        )
+    page.update()
 
 flet.app(target=main, view=flet.WEB_BROWSER)
