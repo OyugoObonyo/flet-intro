@@ -1,23 +1,48 @@
-import os
 import flet
-from flet import Container, GridView, Page, Text, alignment, border, border_radius, colors
-
-os.environ["FLET_WS_MAX_MESSAGE_SIZE"] = "8000000"
+from flet import Container, Draggable, DragTarget, Page, Row, Text, alignment, colors
 
 def main(page: Page):
-    gv = GridView(expand=True, max_extent=150, child_aspect_ratio=1)
-    page.add(gv)
+    page.title = "Drag and Drop example"
 
-    for i in range(5000):
-        gv.controls.append(
-            Container(
-                Text(f"Item {i}"),
-                alignment=alignment.center,
-                bgcolor=colors.AMBER_100,
-                border=border.all(1, colors.AMBER_400),
-                border_radius=border_radius.all(5),
-            )
+    def drag_accept(e):
+        # get draggable (source) control by its ID
+        src = page.get_control(e.src_id)
+        print(e.src_id)
+        # update text inside draggable control
+        val = src.content.content.value
+        # update text inside drag target control
+        e.control.content.content.value = val
+        page.update()
+
+    page.add(
+        Row(
+            [
+                Draggable(
+                    group="number",
+                    content=Container(
+                        width=50,
+                        height=50,
+                        bgcolor=colors.CYAN_200,
+                        border_radius=5,
+                        content=Text("bruno", size=20),
+                        alignment=alignment.center,
+                    ),
+                ),
+                Container(width=1000),
+                DragTarget(
+                    group="number",
+                    content=Container(
+                        width=50,
+                        height=50,
+                        bgcolor=colors.PINK_200,
+                        border_radius=5,
+                        content=Text("0", size=20),
+                        alignment=alignment.center,
+                    ),
+                    on_accept=drag_accept,
+                ),
+            ]
         )
-    page.update()
+    )
 
-flet.app(target=main, view=flet.WEB_BROWSER)
+flet.app(target=main)
