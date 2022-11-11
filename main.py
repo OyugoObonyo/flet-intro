@@ -1,18 +1,23 @@
-from hashlib import new
 import flet
-from flet import Page, Text, TextField, Row, ElevatedButton, Checkbox
+from flet import Page, TextField, Row, ElevatedButton, Checkbox, Text, Column
 
 def main(page: Page):
-    # page.add(x) can be used in place of page.controls.append(x)
-    def add_clicked(event):
-        page.add(Checkbox(label=new_task.value))
     
-    new_task = TextField(hint_text="Add a task", width = 300)
-    page.add(Row([
-        new_task,
-        ElevatedButton("Add", on_click=add_clicked)
-        ]))
+    page.title = "TODO App"
+    first_name = TextField(label="First name", autofocus=True, width=300)
+    last_name = TextField(label="Last name", width=300)
+    greetings = Column()
+
+    def button_clicked(e):
+        greetings.controls.append(Text(f"Hello {first_name.value} {last_name.value}"))
+
+    page.add(
+        first_name,
+        last_name,
+        ElevatedButton("Greet me", on_click=button_clicked),
+        greetings
+    )
     page.update()
-
-
-flet.app(target=main)
+    
+if __name__ == "__main__":
+    flet.app(target=main, port=5500, view=flet.WEB_BROWSER)
