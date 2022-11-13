@@ -1,48 +1,29 @@
 import flet
-from flet import Container, Draggable, DragTarget, Page, Row, Text, alignment, colors
+from flet import Container, ElevatedButton, Page, animation
+from flet.transform import Scale
 
 def main(page: Page):
-    page.title = "Drag and Drop example"
 
-    def drag_accept(e):
-        # get draggable (source) control by its ID
-        src = page.get_control(e.src_id)
-        print(e.src_id)
-        # update text inside draggable control
-        val = src.content.content.value
-        # update text inside drag target control
-        e.control.content.content.value = val
+    c = Container(
+        width=100,
+        height=100,
+        bgcolor="blue",
+        border_radius=5,
+        scale=Scale(scale=1),
+        animate_scale=animation.Animation(600, "bounceOut"),
+    )
+
+    def animate(e):
+        # c1.rotate = 1
+        c.scale = 2
         page.update()
 
+    page.vertical_alignment = "center"
+    page.horizontal_alignment = "center"
+    page.spacing = 30
     page.add(
-        Row(
-            [
-                Draggable(
-                    group="number",
-                    content=Container(
-                        width=50,
-                        height=50,
-                        bgcolor=colors.CYAN_200,
-                        border_radius=5,
-                        content=Text("bruno", size=20),
-                        alignment=alignment.center,
-                    ),
-                ),
-                Container(width=1000),
-                DragTarget(
-                    group="number",
-                    content=Container(
-                        width=50,
-                        height=50,
-                        bgcolor=colors.PINK_200,
-                        border_radius=5,
-                        content=Text("0", size=20),
-                        alignment=alignment.center,
-                    ),
-                    on_accept=drag_accept,
-                ),
-            ]
-        )
+        c,
+        ElevatedButton("Animate!", on_click=animate),
     )
 
 flet.app(target=main)
