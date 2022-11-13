@@ -1,23 +1,14 @@
 import flet
-from flet import Page, TextField, Row, ElevatedButton, Checkbox, Text, Column
+from flet import(
+        Page,
+)
 
-def main(page: Page):
-    
-    page.title = "TODO App"
-    first_name = TextField(label="First name", autofocus=True, width=300)
-    last_name = TextField(label="Last name", width=300)
-    greetings = Column()
-
-    def button_clicked(e):
-        greetings.controls.append(Text(f"Hello {first_name.value} {last_name.value}"))
-
-    page.add(
-        first_name,
-        last_name,
-        ElevatedButton("Greet me", on_click=button_clicked),
-        greetings
-    )
+def app(page: Page) -> None:
+    page.title = "Demo application"
     page.update()
-    
+
+def main() -> None:
+    flet.app(target=app, port=5550, view=flet.WEB_BROWSER)
+
 if __name__ == "__main__":
-    flet.app(target=main, port=5500, view=flet.WEB_BROWSER)
+    main()
